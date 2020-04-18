@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{% extends "blog.html" %}
+
+
+{% block  Content %}
+   		<!-- Page Content -->
+		<section class="container blog">
+			<div class="row">
+		        <!-- Blog Column -->
+		        <div class="col-md-8">
+		            <h1 class="page-header sidebar-title">
+		                搜素预览
+		            </h1>
+					<!--					-->
+		            <!-- First Blog Post -->
+					{% for contact in contacts  %}
+		            <div class="row blogu">
+
+		                <div class="col-sm-4 col-md-4 ">
+		                    <div class="blog-thumb">
+								<!--正文跳转 -->
+		                        <a href="#">
+		                            <img class="img-responsive" src="/{{ contact.img }}" alt="">
+		                        </a>
+		                    </div>
+		                </div>
+		                <div class="col-sm-8 col-md-8">
+		                    <h2 class="blog-title">
+		                        <a href="/blog/{{contact.id}}/">{{ contact.title }}</a>
+		                    </h2>
+		                    <p><i class="fa fa-calendar-o"></i> {{ contact.created_time  | date:"Y-m-d H:i:s"}}
+		                        <span class="comments-padding"></span>
+								<span><i class="fa fa-eye"></i> {{ contact.views }}</span>
+<!--								<span> <i class="fa fa-comment"></i>  4</span>-->
+		                    </p>
+		                    <p>{{ contact.excerpt }}</p>
+		                </div>
+		            </div>
+		            <hr>
+                    {% empty %}
+                    没搜素到相关内容
+					{% endfor %}
+
+
+
+					<!--	分页		-->
+		           <div class="text-center">
+		                <ul class="pagination">
+<!--							{% for page_num  in  contacts.paginator.page_range %}-->
+<!--							{% if  page_num == contacts.number %}-->
+<!--							<li  class="activate"><a href="?page={{ page_num }}">{{ page_num }}</a></li>-->
+<!--							{% else %}-->
+<!--							<li class="activate"><a href="?page={{ page_num }}">{{ page_num }}</a></li>-->
+<!--							{% endif %}-->
+<!--							{% endfor %}-->
+		                </ul>
+		            </div>
+		        </div>
+		            <!-- Blog Sidebar Column -->
+		            <aside class="col-md-4 sidebar-padding">
+						<form  method="get" action="/search/">
+		                <div class="blog-sidebar">
+		                    <div class="input-group searchbar">
+								{% csrf_token %}
+		                        <input type="text" name="search" placeholder="Search for...">
+		                        <span class="input-group-btn">
+		                        <button class="btn btn-default" type="submit">搜索</button>
+		                        </span>
+		                    </div><!-- /input-group -->
+		                </div>
+						</form>
+		                <!-- Blog Categories -->
+		                <!-- Recent Posts -->
+						<!--	最新文章	  -->
+
+					</aside>
+				</div>
+		    </section>
+{%  endblock %}
+{% block end %}
+
+
+{% endblock %}
+</body>
+</html>

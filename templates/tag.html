@@ -1,0 +1,43 @@
+{% extends "blog.html" %}
+
+{% block  Content %}
+   		<!-- Page Content -->
+		<section class="container blog">
+			<div class="row">
+		        <!-- Blog Column -->
+		        <div class="col-md-8">
+		            <h1 class="page-header sidebar-title">
+		                {{ tag }}
+		            </h1>
+					<!--					-->
+		            <!-- First Blog Post -->
+					{% for blog in blogs  %}
+		            <div class="row blogu">
+
+		                <div class="col-sm-4 col-md-4 ">
+		                    <div class="blog-thumb">
+								<!--正文跳转 -->
+		                        <a href="#">
+		                            <img class="img-responsive" src="/{{ blog.img }}" alt="">
+		                        </a>
+		                    </div>
+		                </div>
+		                <div class="col-sm-8 col-md-8">
+		                    <h2 class="blog-title">
+		                        <a href="/blog/{{blog.id}}/">{{ blog.title }}</a>
+		                    </h2>
+		                    <p><i class="fa fa-calendar-o"></i> {{ blog.created_time  | date:"Y-m-d H:i:s"}}
+		                        <span class="comments-padding"></span>
+								<span><i class="fa fa-eye"></i> {{ blog.views }}</span>
+<!--								<span> <i class="fa fa-comment"></i>  4</span>-->
+		                    </p>
+		                    <p>{{ blog.excerpt }}</p>
+		                </div>
+		            </div>
+		            <hr>
+                    {% endfor %}
+{% endblock %}
+					{% block end %}
+
+
+{% endblock %}

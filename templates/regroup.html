@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+{% extends "blog.html" %}
+
+{% block Content %}
+<!-- Page Content -->
+<section class="container blog">
+    <div class="row">
+        <!-- Blog Column -->
+        <div class="col-md-8">
+            {% for regroup in tags %}
+            <li><a href="/regroup/{{ regroup.name}}">{{ regroup.name }}</a></li>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
+    {% block end %}
+    {% endblock %}
+</body>
+</html>
+
+
+

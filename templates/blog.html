@@ -1,0 +1,316 @@
+
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="description" content="">
+		<meta name="author" content="">
+
+        <title>asimov</title>
+
+        <!-- Bootstrap Core CSS -->
+
+        <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+
+        <!-- Custom Fonts -->
+        <link href="{% static 'font-awesome/css/font-awesome.min.css' %}" rel="stylesheet" type="text/css">
+
+        <!-- Custom CSS -->
+		<link rel="stylesheet" href="{% static 'css/patros.css' %}" >
+        
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+            <![endif]-->
+
+<!--		<link rel="stylesheet" href="{% static 'css/fontello-ie7.css' %}">-->
+
+<!--		<link href="{% static 'css/font.css' %}" rel="stylesheet" type="text/css">-->
+<!--		<link href="{% static 'css/etlinefont.css' %}" rel="stylesheet" type="text/css">-->
+<!--		<link href="{% static 'css/font-awesome.css' %}" rel="stylesheet" type="text/css">-->
+		<link href="{% static 'css/base.css' %}" rel="stylesheet" type="text/css">
+<!--		<link href="{% static 'css/skeleton.css' %}" rel="stylesheet" type="text/css">-->
+		<link href="{% static 'css/main.css' %}" rel="stylesheet" type="text/css">
+<!--		<link href="{% static 'css/magnific-popup.css' %}" rel="stylesheet"  />-->
+<!--		<link href="{% static 'css/flexslider.css' %}" rel="stylesheet" />-->
+
+	</head>
+
+	<body data-spy="scroll">
+		<!-- Navigation -->
+		<nav class="navbar navbar-inverse navbar-fixed-top">
+			<div class="container">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+<!--					<a class="navbar-brand" href="#"><img src="{%  static 'images/logo.png' %}" alt="company logo"/></a>-->
+				</div>
+				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+					<ul class="nav navbar-nav navbar-right custom-menu">
+						<li class=""><a href="/index">主页</a></li>
+						<li class=""><a href="/blog">博客</a></li>
+						<li class=""><a href="/regroup">标签</a></li>
+<!--						<li><a href="#">相册</a></li>-->
+<!--						<li><a href="#"></a></li>-->
+					</ul>
+				</div>
+			</div>
+		</nav>
+{% block  Content %}
+		<!-- Page Content -->
+		<section class="container blog">
+			<div class="row">
+		        <!-- Blog Column -->
+		        <div class="col-md-8">
+		            <h1 class="page-header sidebar-title">
+		                博客预览
+		            </h1>
+					<!--					-->
+		            <!-- First Blog Post -->
+				{% for contact in contacts %}
+		            <div class="row blogu">
+
+		                <div class="col-sm-4 col-md-4 ">
+		                    <div class="blog-thumb">
+								<!--正文跳转 -->
+		                        <a href="#">
+		                            <img class="img-responsive" src="/{{ contact.img }}" alt="">
+		                        </a>
+		                    </div>
+		                </div>
+		                <div class="col-sm-8 col-md-8">
+		                    <h2 class="blog-title">
+		                        <a href="/blog/{{contact.id}}/">{{ contact.title }}</a>
+		                    </h2>
+		                    <p><i class="fa fa-calendar-o"></i> {{ contact.created_time | date:"Y-m-d H:i:s"}}
+		                        <span class="comments-padding"></span>
+								<span><i class="fa fa-eye"></i> {{ contact.views }}</span>
+<!--								<span> <i class="fa fa-comment"></i>  4</span>-->
+		                    </p>
+		                    <p>{{ contact.excerpt }}</p>
+		                </div>
+		            </div>
+		            <hr>
+
+				{% endfor %}
+
+
+					<!--	分页		-->
+		            <div class="text-center">
+		                <ul class="pagination">
+							{% for page_num  in  contacts.paginator.page_range %}
+							{% if  page_num == contacts.number %}
+							{{ page_num }}
+							{% else %}
+							<li class="activate"><a href="?page={{ page_num }}">{{ page_num }}</a></li>
+							{% endif %}
+							{% endfor %}
+		                </ul>
+		            </div>
+		        </div>
+		            <!-- Blog Sidebar Column -->
+		            <aside class="col-md-4 sidebar-padding">
+						<form  method="get" action="/search/">
+		                <div class="blog-sidebar">
+		                    <div class="input-group searchbar">
+								{% csrf_token %}
+		                        <input type="text" name="search" placeholder="Search for...">
+		                        <span class="input-group-btn">
+		                        <button class="btn btn-default" type="submit">搜索</button>
+		                        </span>
+		                    </div><!-- /input-group -->
+		                </div>
+						</form>
+		                <!-- Blog Categories -->
+		                <div class="blog-sidebar">
+		                    <h4 class="sidebar-title"><i class="fa fa-list-ul"></i>分类</h4>
+		                    <hr>
+		                    <ul class="sidebar-list">
+								{% for  category  in  categorys %}
+		                        <li><a href="/category/{{ category.id }}">{{ category.name }}</a></li>
+								{% endfor %}
+
+		                    </ul>
+		                </div>
+		                <!-- Recent Posts -->
+						<!--	最新文章	  -->
+		                <div class="blog-sidebar">
+		                    <h4 class="sidebar-title"><i class="fa fa-align-left"></i>热门文章</h4>
+		                    <hr style="margin-bottom: 5px;">
+							{% for  hotview  in hotviews %}
+		                    <div class="media">
+		                        <a class="pull-left" href="/blog/{{ hotview.id }}">
+		                            <img class="img-responsive media-object" src="/{{ hotview.img }}" alt="">
+		                        </a>
+		                        <div class="media-body">
+		                            <h4 class="media-heading"><a href="/blog/{{ hotview.id }}">{{ hotview.title }}</a></h4>
+		                            {{ hotview.excerpt }}
+									<i class="fa fa-eye"></i> {{ hotview.views }}
+		                        </div>
+		                    </div>
+							{% endfor %}
+		                </div>
+						<!--	评论	-->
+		                <div class="blog-sidebar">
+		                    <h4 class="sidebar-title"><i class="fa fa-comments"></i>最新评论</h4>
+		                    <hr style="margin-bottom: 5px;">
+		                     <ul class="sidebar-list">
+								 {% for  comment  in   comments %}
+		                        <li><h5 class="blog-title">Author Name</h5><p>{{ comment.text }}</p>
+		                        </li>
+								 {% endfor %}
+							</ul>
+						</div>
+
+					</aside>
+				</div>
+		    </section>
+{% endblock %}
+
+
+{% block end %}
+<!--Footer-->
+								<footer id="footer" class="footer tCenter">
+
+								<!--Footer top-->
+								<div class="footerTop ofsInTop ofsBMedium">
+										<!--Container-->
+										<div class="container clearfix">
+
+												<!--Footer top inner-->
+												<div class="ftInner">
+												<ul class="socialsFooter">
+
+
+
+													<li><a href="#"><i class="fa fa-facebook"></i></a></li>
+													<li><a href="#"><i class="fa fa-wechat"></i></a></li>
+													<li><a href="#"><i class="fa fa-qq"></i></a></li>
+													<li><a href="#"><i class="fa fa-weibo"></i></a></li>
+													<li><a href="#"><i class="fa fa-twitter"></i></a></li>
+													<li><a href="#"><i class="fa fa-github"></i></a></li>
+
+												</ul>
+
+
+												<div class="top">
+													<a class="scroll" href="#wrapper"><i class="fa fa-angle-double-up"></i></a>
+												</div>
+
+												</div>
+												<!--End footer top inner-->
+
+										</div>
+											<!--End container-->
+
+								</div>
+								<!--End footer top-->
+
+
+
+
+							<!--Footer bottom-->
+							<div class="footerBottom ofsTSmall ofsBSmall">
+									<!--Container-->
+									<div class="container clearfix">
+
+											<!--Footer bottom inner-->
+											<div class="fbInner">
+
+												<p>Copyright &copy; 2020 <a href="/index" target="_blank" title="">个人博客</a>
+
+											</div>
+
+											<!--End footer bottom inner-->
+
+
+							</div>
+								<!--End container-->
+							</div>
+								<!--End footer bottom-->
+
+
+						</footer>
+					<!--End footer-->
+
+
+
+
+{% endblock %}
+
+		    <!--Javascript-->
+		<script src="{% static 'js/jquery-1.9.1.min.js' %}" type="text/javascript"></script>
+		<script src="{%  static 'js/jquery-migrate-1.2.1.js' %}" type="text/javascript"></script>
+		<script src="{% static 'js/jquery.flexslider-min.js' %}" type="text/javascript"></script>
+		<script src="{% static 'js/jquery.easing.1.3.js' %}" type="text/javascript"></script>
+		<script src="{% static 'js/jquery.smooth-scroll.js'  %}" type="text/javascript"></script>
+		<script src="{% static 'js/jquery.quicksand.js' %}" type="text/javascript"></script>
+		<script src="{%  static 'js/modernizr.custom.js'  %}" type="text/javascript"></script>
+		<script src="{% static 'js/jquery.magnific-popup.js' %}" type="text/javascript"></script>
+		<!--<script src="js/jquery.tweet.js" type="text/javascript"></script>-->
+		<script src="{% static 'js/spectragram.min.js' %}" type="text/javascript"></script>
+		<script src="{%  static 'js/Placeholders.min.js' %}" type="text/javascript"></script>
+		<script src="{%  static  'js/script.js' %}" type="text/javascript"></script>
+        <!-- jQuery -->
+        <script src="{% static 'js/jquery.js' %}"></script>
+        <!-- Bootstrap Core JavaScript -->
+        <script src="{% static 'js/bootstrap.min.js' %}"></script>
+
+
+        <!--Jquery Smooth Scrolling-->
+        <script>
+            $(document).ready(function(){
+                $('.custom-menu a[href^="#"], .intro-scroller .inner-link').on('click',function (e) {
+                    e.preventDefault();
+
+                    var target = this.hash;
+                    var $target = $(target);
+
+                    $('html, body').stop().animate({
+                        'scrollTop': $target.offset().top
+                    }, 900, 'swing', function () {
+                        window.location.hash = target;
+                    });
+                });
+
+                $('a.page-scroll').bind('click', function(event) {
+                    var $anchor = $(this);
+                    $('html, body').stop().animate({
+                        scrollTop: $($anchor.attr('href')).offset().top
+                    }, 1500, 'easeInOutExpo');
+                    event.preventDefault();
+                });
+
+               $(".nav a").on("click", function(){
+                     $(".nav").find(".active").removeClass("active");
+                    $(this).parent().addClass("active");
+            	});
+
+                $('body').append('<div id="toTop" class="btn btn-primary color1"><span class="glyphicon glyphicon-chevron-up"></span></div>');
+                    $(window).scroll(function () {
+                        if ($(this).scrollTop() != 0) {
+                            $('#toTop').fadeIn();
+                        } else {
+                            $('#toTop').fadeOut();
+                        }
+                    }); 
+                $('#toTop').click(function(){
+                    $("html, body").animate({ scrollTop: 0 }, 700);
+                    return false;
+                });
+
+            });
+        </script>
+
+    </body>
+</html>
